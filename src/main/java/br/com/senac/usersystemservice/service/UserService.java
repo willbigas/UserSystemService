@@ -18,12 +18,25 @@ public class UserService {
         return userRepository.findAll();
     }
 
+    public User findById(Long id) {
+        return userRepository.findById(id).orElse(null);
+    }
+
     public User save(User user) {
         return userRepository.save(user);
     }
 
+
     public void delete(User user) {
         userRepository.delete(user);
+    }
+
+    public void deleteById(Long userId) {
+        userRepository.deleteById(userId);
+    }
+
+    public boolean ifExists(Long id) {
+        return userRepository.existsById(id);
     }
 
 }

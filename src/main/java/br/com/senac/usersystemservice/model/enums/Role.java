@@ -2,7 +2,7 @@ package br.com.senac.usersystemservice.model.enums;
 
 public enum Role {
 
-    ADMINISTRADOR,
+    ADMINISTRATOR,
     NORMAL,
     GUEST
 }
