@@ -1,8 +1,11 @@
 package br.com.senac.usersystemservice.service;
 
+import br.com.senac.usersystemservice.model.User;
 import br.com.senac.usersystemservice.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class UserService {
@@ -10,21 +13,17 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    public void create() {
 
+    public List<User> findAll() {
+        return userRepository.findAll();
     }
 
-
-    public void change() {
-
+    public User save(User user) {
+        return userRepository.save(user);
     }
 
-    public void login() {
-
+    public void delete(User user) {
+        userRepository.delete(user);
     }
 
-
-    public void logout() {
-
-    }
 }
