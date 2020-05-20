@@ -3,6 +3,9 @@ package br.com.senac.usersystemservice.endpoint;
 import br.com.senac.usersystemservice.model.Const;
 import br.com.senac.usersystemservice.model.Guest;
 import br.com.senac.usersystemservice.service.GuestService;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,18 +16,27 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/guests")
+@RequestMapping("/api/guests")
+@ApiOperation(value = "Convidados")
 public class GuestController {
 
     @Autowired
     private GuestService guestService;
 
+    @ApiOperation(value = "Listar todos os Convidados")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Listar todos os Convidados")
+    })
     @Secured({Const.ROLE_CLIENT, Const.ROLE_ADMIN})
     @GetMapping
     public List<Guest> findAll() {
         return guestService.findAll();
     }
 
+    @ApiOperation(value = "Procurar Convidado")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Procurar Convidado")
+    })
     @Secured({Const.ROLE_CLIENT, Const.ROLE_ADMIN})
     @GetMapping("/{guestId}")
     public ResponseEntity<Guest> findAll(@PathVariable Long guestId) {
@@ -35,6 +47,10 @@ public class GuestController {
         return ResponseEntity.notFound().build();
     }
 
+    @ApiOperation(value = "Criar novo Convidado")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Criar novo Convidado")
+    })
     @Secured({Const.ROLE_CLIENT, Const.ROLE_ADMIN})
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -42,6 +58,10 @@ public class GuestController {
         return guestService.save(guest);
     }
 
+    @ApiOperation(value = "Alterar Convidado")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Alterar Convidado")
+    })
     @PutMapping("/{guestId}")
     public ResponseEntity<Guest> change(@Valid @PathVariable Long guestId, @RequestBody Guest guest) {
         if (!guestService.ifExists(guestId)) {
@@ -52,6 +72,10 @@ public class GuestController {
         return ResponseEntity.ok(guest);
     }
 
+    @ApiOperation(value = "Deleta Convidado")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Deleta Convidado")
+    })
     @Secured({Const.ROLE_CLIENT, Const.ROLE_ADMIN})
     @DeleteMapping("/{guestId}")
     public ResponseEntity<Void> delete(@PathVariable Long guestId) {
