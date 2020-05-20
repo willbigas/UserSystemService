@@ -1,10 +1,12 @@
 package br.com.senac.usersystemservice.endpoint;
 
+import br.com.senac.usersystemservice.model.Const;
 import br.com.senac.usersystemservice.model.Guest;
 import br.com.senac.usersystemservice.service.GuestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -17,12 +19,13 @@ public class GuestController {
     @Autowired
     private GuestService guestService;
 
-
+    @Secured({Const.ROLE_CLIENT, Const.ROLE_ADMIN})
     @GetMapping
     public List<Guest> findAll() {
         return guestService.findAll();
     }
 
+    @Secured({Const.ROLE_CLIENT, Const.ROLE_ADMIN})
     @GetMapping("/{guestId}")
     public ResponseEntity<Guest> findAll(@PathVariable Long guestId) {
         Guest guest = guestService.findById(guestId);
@@ -32,6 +35,7 @@ public class GuestController {
         return ResponseEntity.notFound().build();
     }
 
+    @Secured({Const.ROLE_CLIENT, Const.ROLE_ADMIN})
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Guest create(@Valid @RequestBody Guest guest) {
@@ -48,6 +52,7 @@ public class GuestController {
         return ResponseEntity.ok(guest);
     }
 
+    @Secured({Const.ROLE_CLIENT, Const.ROLE_ADMIN})
     @DeleteMapping("/{guestId}")
     public ResponseEntity<Void> delete(@PathVariable Long guestId) {
         if (!guestService.ifExists(guestId)) {
@@ -56,6 +61,5 @@ public class GuestController {
         guestService.deleteById(guestId);
         return ResponseEntity.noContent().build();
     }
-
 
 }
