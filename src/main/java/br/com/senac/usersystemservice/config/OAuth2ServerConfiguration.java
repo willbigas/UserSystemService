@@ -40,11 +40,14 @@ public class OAuth2ServerConfiguration {
         @Override
         public void configure(HttpSecurity http) throws Exception {
             http
-                    .logout()
+                    .csrf().disable()
+                    .antMatcher("/**")
+                    .authorizeRequests()
+                    .antMatchers("/swagger-ui.html", "/swagger-resources/**", "/v2/**","/webjars/**").permitAll()
+                    .anyRequest().fullyAuthenticated()
+                    .and().logout()
                     .invalidateHttpSession(true)
-                    .clearAuthentication(true)
-                    .and().authorizeRequests()
-                    .anyRequest().fullyAuthenticated();
+                    .clearAuthentication(true).permitAll();
         }
 
     }
