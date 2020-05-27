@@ -4,7 +4,10 @@ import br.com.senac.usersystemservice.model.Const;
 import br.com.senac.usersystemservice.model.User;
 import br.com.senac.usersystemservice.repository.RoleRepository;
 import br.com.senac.usersystemservice.service.UserService;
-import io.swagger.annotations.*;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +19,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/users")
 public class UserController {
 
     @Autowired
@@ -28,22 +31,32 @@ public class UserController {
     @Autowired
     PasswordEncoder passwordEncoder;
 
-    @ApiOperation(value = "Retorna uma lista de Usuários")
+    @ApiOperation(value = "Retorna lista de Usuários Ativos")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Retorna a lista de Usuário")
+            @ApiResponse(code = 200, message = "Retorna lista de Usuário Ativos")
     })
-    @Secured({Const.ROLE_CLIENT, Const.ROLE_ADMIN})
-    @GetMapping(produces = "application/json", consumes = "application/json")
+    @Secured({Const.ROLE_ADMIN})
+    @GetMapping
+    public List<User> findAllActives() {
+        return userService.findAllActives();
+    }
+
+    @ApiOperation(value = "Retorna lista de todos Usuários")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Retorna lista de todos Usuário")
+    })
+    @Secured({Const.ROLE_ADMIN})
+    @GetMapping(value = "/findAll")
     public List<User> findAll() {
         return userService.findAll();
     }
 
-    @ApiOperation(value = "Retorna o usuário com o ID informado")
+    @ApiOperation(value = "Retorna usuário com o ID informado")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Retorna o usuário com o ID informado")
+            @ApiResponse(code = 200, message = "Retorna usuário com o ID informado")
     })
-    @Secured({Const.ROLE_CLIENT, Const.ROLE_ADMIN})
-    @GetMapping(value = "/{userId}", produces = "application/json", consumes = "application/json")
+    @Secured({Const.ROLE_ADMIN})
+    @GetMapping(value = "/{userId}")
     public ResponseEntity<User> find(@PathVariable Long userId) {
         User user = userService.findById(userId);
 
@@ -52,14 +65,14 @@ public class UserController {
         return ResponseEntity.notFound().build();
     }
 
-    @ApiOperation(value = "Cria um Usuário")
+    @ApiOperation(value = "Cria Usuário")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Cria um Usuário")
+            @ApiResponse(code = 200, message = "Cria Usuário")
     })
-    @Secured({Const.ROLE_CLIENT, Const.ROLE_ADMIN})
+    @Secured({Const.ROLE_ADMIN})
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public User create( @ApiParam(value = "Usuário que será Salvo", required = true)  @Valid @RequestBody User user) {
+    public User create(@ApiParam(value = "Usuário que será Salvo", required = true) @Valid @RequestBody User user) {
         return userService.save(user);
     }
 
@@ -67,8 +80,8 @@ public class UserController {
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Alterar Usuário")
     })
-    @Secured({Const.ROLE_CLIENT, Const.ROLE_ADMIN})
-    @PutMapping(value = "/{userId}", produces = "application/json", consumes = "application/json")
+    @Secured({Const.ROLE_ADMIN})
+    @PutMapping(value = "/{userId}")
     public ResponseEntity<User> change(@Valid @PathVariable Long userId, @RequestBody User user) {
         if (!userService.ifExists(userId)) {
             return ResponseEntity.notFound().build();
@@ -82,8 +95,8 @@ public class UserController {
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Deleta Usuário")
     })
-    @Secured({Const.ROLE_CLIENT,Const.ROLE_ADMIN})
-    @DeleteMapping(value = "/{userId}", produces = "application/json", consumes = "application/json")
+    @Secured({Const.ROLE_ADMIN})
+    @DeleteMapping(value = "/{userId}")
     public ResponseEntity<Void> delete(@PathVariable Long userId) {
         if (!userService.ifExists(userId)) {
             return ResponseEntity.notFound().build();

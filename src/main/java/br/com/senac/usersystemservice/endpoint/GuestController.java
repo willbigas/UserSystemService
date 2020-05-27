@@ -16,19 +16,29 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/guests")
+@RequestMapping("/guests")
 @ApiOperation(value = "Convidados")
 public class GuestController {
 
     @Autowired
     private GuestService guestService;
 
+    @ApiOperation(value = "Listar todos os Convidados Ativos")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Listar todos os Convidados Ativos")
+    })
+    @Secured({Const.ROLE_CLIENT, Const.ROLE_ADMIN})
+    @GetMapping
+    public List<Guest> findAllAcives() {
+        return guestService.findAllActives();
+    }
+
     @ApiOperation(value = "Listar todos os Convidados")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Listar todos os Convidados")
     })
     @Secured({Const.ROLE_CLIENT, Const.ROLE_ADMIN})
-    @GetMapping
+    @GetMapping(value = "/findAll")
     public List<Guest> findAll() {
         return guestService.findAll();
     }

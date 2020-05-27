@@ -25,7 +25,8 @@ public class SwaggerConfig {
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("br.com.senac.usersystemservice.endpoint"))
+                .apis(RequestHandlerSelectors.any())
+//                .apis(RequestHandlerSelectors.basePackage("br.com.senac.usersystemservice.endpoint"))
 //                .paths(PathSelectors.ant("/"))
                 .paths(PathSelectors.any())
                 .build()
