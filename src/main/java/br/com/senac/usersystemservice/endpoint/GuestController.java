@@ -2,6 +2,8 @@ package br.com.senac.usersystemservice.endpoint;
 
 import br.com.senac.usersystemservice.model.Const;
 import br.com.senac.usersystemservice.model.Guest;
+import br.com.senac.usersystemservice.model.dto.GuestDTO;
+import br.com.senac.usersystemservice.model.dto.GuestResponseDTO;
 import br.com.senac.usersystemservice.service.GuestService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -64,8 +66,9 @@ public class GuestController {
     @Secured({Const.ROLE_CLIENT, Const.ROLE_ADMIN})
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Guest create(@Valid @RequestBody Guest guest) {
-        return guestService.save(guest);
+    public ResponseEntity<GuestResponseDTO> create(@Valid @RequestBody GuestDTO dto) {
+        Guest guest = guestService.save(dto.dtoTOObject());
+        return new ResponseEntity<>(GuestResponseDTO.objectToDTO(guest), HttpStatus.CREATED);
     }
 
     @ApiOperation(value = "Alterar Convidado")
