@@ -13,6 +13,7 @@ import javax.validation.constraints.NotEmpty;
 @Getter
 @Setter
 public class Guest {
+
     @ApiModelProperty(value = "ID do Convidado")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
