@@ -8,6 +8,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
+import java.util.List;
 
 @Entity(name = "guest")
 @Getter
@@ -28,10 +29,16 @@ public class Guest {
     private String email;
     @ApiModelProperty(value = "Telefone do Convidado")
     private String phone;
-    private boolean active;
 
-    @OneToOne
-    private User user;
+    @ManyToMany(fetch = FetchType.EAGER)
+
+    @JoinTable(name="guest_user",
+            joinColumns=@JoinColumn(name="guest_id"),
+            inverseJoinColumns=@JoinColumn(name="user_id"))
+    private List<User> users;
+
+
+    private boolean active;
 
     public Guest() {
         this.active = true;

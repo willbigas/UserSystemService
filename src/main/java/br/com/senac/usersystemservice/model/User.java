@@ -2,13 +2,10 @@ package br.com.senac.usersystemservice.model;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.validator.constraints.UniqueElements;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.List;
 
@@ -16,6 +13,7 @@ import java.util.List;
 @Getter
 @Setter
 public class User implements Serializable {
+
     @ApiModelProperty(value = "ID do Usuário")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,6 +33,9 @@ public class User implements Serializable {
             joinColumns=@JoinColumn(name="user_id"),
             inverseJoinColumns=@JoinColumn(name="role_id"))
     private List<Role> roles;
+
+    @ManyToMany(mappedBy = "users")
+    private List<Guest> guests;
 
     public User(){
         this.active= true;

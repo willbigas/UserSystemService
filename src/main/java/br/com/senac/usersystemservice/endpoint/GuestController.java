@@ -64,10 +64,10 @@ public class GuestController {
             @ApiResponse(code = 200, message = "Criar novo Convidado")
     })
     @Secured({Const.ROLE_CLIENT, Const.ROLE_ADMIN})
-    @PostMapping
+    @PostMapping("/{userId}")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<GuestResponseDTO> create(@Valid @RequestBody GuestDTO dto) {
-        Guest guest = guestService.save(dto.dtoTOObject());
+    public ResponseEntity<GuestResponseDTO> create(@Valid @RequestBody GuestDTO dto , @PathVariable Long userId) {
+        Guest guest = guestService.save(dto.dtoTOObject(), userId);
         return new ResponseEntity<>(GuestResponseDTO.objectToDTO(guest), HttpStatus.CREATED);
     }
 
