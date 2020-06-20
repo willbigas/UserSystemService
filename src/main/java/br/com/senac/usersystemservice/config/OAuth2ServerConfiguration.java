@@ -39,7 +39,7 @@ public class OAuth2ServerConfiguration {
         @Override
         public void configure(HttpSecurity http) throws Exception {
             http
-                    .cors().and()
+                    .cors().disable().antMatcher("/**").authorizeRequests().and()
                     .csrf().disable()
                     .antMatcher("/**")
                     .authorizeRequests()
