@@ -26,9 +26,7 @@ public class GuestController {
     private GuestService guestService;
 
     @ApiOperation(value = "Listar todos os Convidados Ativos")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Listar todos os Convidados Ativos")
-    })
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "Listar todos os Convidados Ativos")})
     @Secured({Const.ROLE_CLIENT, Const.ROLE_ADMIN})
     @GetMapping
     public List<Guest> findAllAcives() {
@@ -36,9 +34,7 @@ public class GuestController {
     }
 
     @ApiOperation(value = "Listar todos os Convidados")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Listar todos os Convidados")
-    })
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "Listar todos os Convidados")})
     @Secured({Const.ROLE_CLIENT, Const.ROLE_ADMIN})
     @GetMapping(value = "/findAll")
     public List<Guest> findAll() {
@@ -46,9 +42,7 @@ public class GuestController {
     }
 
     @ApiOperation(value = "Procurar Convidado")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Procurar Convidado")
-    })
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "Procurar Convidado")})
     @Secured({Const.ROLE_CLIENT, Const.ROLE_ADMIN})
     @GetMapping("/{guestId}")
     public ResponseEntity<Guest> findAll(@PathVariable Long guestId) {
@@ -60,21 +54,17 @@ public class GuestController {
     }
 
     @ApiOperation(value = "Criar novo Convidado")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Criar novo Convidado")
-    })
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "Criar novo Convidado")})
     @Secured({Const.ROLE_CLIENT, Const.ROLE_ADMIN})
     @PostMapping("/{userId}")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<GuestResponseDTO> create(@Valid @RequestBody GuestDTO dto , @PathVariable Long userId) {
+    public ResponseEntity<GuestResponseDTO> create(@Valid @RequestBody GuestDTO dto, @PathVariable Long userId) {
         Guest guest = guestService.save(dto.dtoTOObject(), userId);
         return new ResponseEntity<>(GuestResponseDTO.objectToDTO(guest), HttpStatus.CREATED);
     }
 
     @ApiOperation(value = "Alterar Convidado")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Alterar Convidado")
-    })
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "Alterar Convidado")})
     @PutMapping("/{guestId}")
     public ResponseEntity<Guest> change(@Valid @PathVariable Long guestId, @RequestBody Guest guest) {
         if (!guestService.ifExists(guestId)) {
@@ -86,9 +76,7 @@ public class GuestController {
     }
 
     @ApiOperation(value = "Deleta Convidado")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Deleta Convidado")
-    })
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "Deleta Convidado")})
     @Secured({Const.ROLE_CLIENT, Const.ROLE_ADMIN})
     @DeleteMapping("/{guestId}")
     public ResponseEntity<Void> delete(@PathVariable Long guestId) {
